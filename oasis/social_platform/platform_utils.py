@@ -108,6 +108,12 @@ class PlatformUtils:
                     f"User {user_id} quoted a post from User "
                     f"{original_user_id}. Quote content: {quote_content}. "
                     f"Original Content: {content}")
+                # Quotes have their own report count, independent of the root
+                # post and any previously rendered item in this feed.
+                self.db_cursor.execute(
+                    "SELECT num_reports FROM post WHERE post_id = ?",
+                    (post_id, ))
+                num_reports = self.db_cursor.fetchone()[0]
 
             elif post_type_result["type"] == "common":
                 post_content = content
