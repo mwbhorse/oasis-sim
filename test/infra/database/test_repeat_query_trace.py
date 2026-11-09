@@ -87,4 +87,5 @@ async def test_query_trace_write_failure_is_not_swallowed(platform, action,
     result = await getattr(platform, action)(0, *args)
     assert result["success"] is False
     assert "readonly" in result["error"]
-    assert platform.db.execute("SELECT COUNT(*) FROM trace").fetchone() == (0, )
+    count = platform.db.execute("SELECT COUNT(*) FROM trace").fetchone()[0]
+    assert count == 0
